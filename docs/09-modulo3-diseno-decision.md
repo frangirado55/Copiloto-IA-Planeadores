@@ -26,7 +26,18 @@ Con: fuerza térmica actual, fuerza candidata, distancia a la candidata, altura 
 - **La polar real** del planeador de referencia (de la escuela o de papá) — hoy usa valores aproximados de un planeador de entrenamiento genérico (tipo ASK-21), marcados explícitamente como placeholder en el código.
 - **Calibrar el umbral de "significativamente mejor"** (hoy 15%) y el margen de seguridad de altura (hoy 150m) con datos reales de vuelo — tarea de la Fase 4/5 del plan.
 
-## Integración con el resto
+## Integración con el Módulo 1-B (ya implementada)
 
-- Con el Módulo 1-B (terreno) ya armado, la "fuerza candidata" se puede aproximar con el score de potencial térmico de la zona hacia donde se mira (más alto el score, mayor la fuerza asumida) — pendiente de definir la conversión score→m/s estimados, hoy son fuentes separadas.
-- Con datos de vuelo reales (Fase 4), se recalibra tanto el umbral de decisión como esa conversión score→fuerza.
+`scripts/copiloto.py` conecta ambos módulos en un solo pipeline:
+
+1. Dada la posición actual (lat/lon) y un radio de búsqueda, lee el `score_termico.tif` generado por `analizar_terreno.py` y busca las zonas con mejor score dentro de ese radio (excluyendo un radio chico alrededor del punto actual, para no proponer la térmica en la que ya se está).
+2. Convierte el score (0-100) a una fuerza estimada en m/s con una heurística lineal simple: score 0 → 0.5 m/s, score 100 → 4.0 m/s. Sin calibrar con vuelos reales todavía — es el primer punto a ajustar con datos de la Fase 4.
+3. Le pasa esa fuerza estimada y la distancia real (fórmula haversine) al `decidir()` del Módulo 3.
+
+Con esto, dado solo posición + altura + fuerza de la térmica actual, el sistema devuelve directamente "quedate" o "virá hacia [zona]" sin que haya que pasarle a mano los datos de la candidata.
+
+## Qué falta calibrar (Fase 4/5, no bloqueante)
+
+- La conversión score→fuerza (hoy lineal 0.5-4.0 m/s) es una suposición de arranque.
+- El umbral de "significativamente mejor" (15%) y el margen de seguridad de altura (150m).
+- La polar real del Blanik más allá de los 2 puntos públicos verificados (falta un tercer punto a alta velocidad, idealmente del manual de vuelo).
