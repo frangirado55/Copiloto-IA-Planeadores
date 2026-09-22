@@ -25,7 +25,6 @@ Rectángulo de ~60×60 km cubriendo:
 - **Modelo de elevación**: SRTM vía [USGS EarthExplorer](https://earthexplorer.usgs.gov/) o directamente desde Earth Engine.
 - **Red FLARM/OGN**: consultar cobertura en vivo en [glidernet.org](http://www.glidernet.org) centrando el mapa en las coordenadas de arriba.
 
-## Pendiente de confirmar
+## Cobertura OGN: confirmada que NO hay (22/09)
 
-- Si los FLARM de papá y otros socios del club suben efectivamente a la red OGN pública (requiere estación receptora cerca — puede que ya exista y no se sepa, o que haya que averiguarlo/armarla).
-- Cobertura real de glidernet.org sobre el cuadrante de vuelo.
+Se descartó definitivamente — no hay cobertura de red OGN/glidernet.org sobre el cuadrante de vuelo. Confirma que el Módulo 1 depende solo del análisis de terreno (Módulo 1-B), no de la red FLARM/OGN (Módulo 1-A). Ver `06-historial-iteraciones.md` y `07-proximos-pasos.md`.

@@ -8,7 +8,7 @@ Registro para no repetir el mismo análisis en sesiones futuras.
 
 ## 2. Red FLARM/OGN pura (reactiva)
 
-**Aceptado parcialmente.** Es viable y gratuita, pero es puramente reactiva (te enterás cuando otro planeador ya está girando) y en Argentina la cobertura OGN es floja. Se mantiene como una de las dos fuentes del Módulo 1, no como única.
+**Descartada definitivamente (22/09).** Se confirmó que no hay cobertura OGN en la zona de vuelo — no hay estación receptora cerca. El Módulo 1 depende exclusivamente del análisis de terreno (Módulo 1-B), no de esta red.
 
 ## 3. Modelos meteorológicos tipo RASP
 

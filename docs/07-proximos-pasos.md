@@ -2,8 +2,7 @@
 
 ## Confirmar con el club / familia
 
-- [ ] Preguntarle a papá (o algún socio con FLARM) qué modelo/versión tiene y si sabe si hay estación receptora OGN cerca del club.
-- [ ] Chequear cobertura real de la zona del club en [glidernet.org](http://www.glidernet.org) — poner el mapa en -34.12, -59.08 y ver si aparecen planeadores en vivo.
+- [x] **Confirmar cobertura OGN en la zona: NO hay.** Descartada definitivamente (22/09) — confirma la decisión de `00-decision-final.md` de no depender de la red FLARM/OGN. El Módulo 1 se apoya solo en el Módulo 1-B (terreno), no en Módulo 1-A (red).
 - [ ] Confirmar si hay cobertura RASP para la zona de Zárate.
 
 ## Fase 1 — MVP de decisión (arrancar por acá)
