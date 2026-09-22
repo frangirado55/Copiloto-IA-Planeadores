@@ -21,6 +21,8 @@ Proyecto en etapa de definición de alcance. Ver `docs/00-decision-final.md` par
 - `docs/06-historial-iteraciones.md` — registro de qué enfoques se descartaron y por qué (para no repetir el mismo análisis).
 - `docs/07-proximos-pasos.md` — checklist accionable, el punto de partida para la próxima sesión de trabajo.
 - `docs/08-modulo1b-diseno-terreno.md` — diseño técnico de la IA de lectura de terreno (Módulo 1-B): señales de entrada, pipeline de procesamiento, por qué no hace falta entrenar un modelo propio al principio, e integración con el Módulo 3.
+- `docs/09-modulo3-diseno-decision.md` — diseño técnico de la IA de decisión (Módulo 3): teoría MacCready, lógica de quedarse/virar, integración con el Módulo 1-B.
+- `docs/10-patron-diurno-temperatura.md` — investigación con datos satelitales reales (GOES-19) de cómo cambia la temperatura del terreno a lo largo del día, y el efecto de isla de calor urbana en Zárate al atardecer.
 
 ## Cómo continuar en Claude Code
 
