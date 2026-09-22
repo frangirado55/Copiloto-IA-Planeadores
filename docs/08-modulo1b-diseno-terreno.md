@@ -36,6 +36,15 @@ Lo que estos datasets **no** distinguen bien es el matiz que más importa para t
 
 **Calibración con conocimiento local (Franco, 22/09)**: confirmado que en la zona de Zárate las fábricas y la Ruta 9 son disparadores térmicos muy fuertes (mejor opción que un campo seco promedio), y que los lagos/ríos alrededor inhiben térmica como se esperaba. Por eso el score de la clase "Built-up" se subió de 75 a 90/100 (casi al tope, a la par del suelo desnudo) — el valor original lo subestimaba.
 
+### Hotspots conocidos (puntos concretos, no solo clase de terreno)
+
+Además de calibrar la clase genérica "Built-up", se agregaron dos puntos concretos confirmados por Franco como disparadores confiables: la planta de **Toyota Argentina** y el **Centro Industrial/Logístico de Mercedes-Benz**, ambas en Zárate. Se ubicaron visualmente sobre la imagen Sentinel-2 (inspeccionando manualmente la imagen y las coordenadas de referencia dibujadas sobre ella) — no son coordenadas geocodificadas oficiales, tienen margen de error de algunos cientos de metros:
+
+- Toyota Argentina (planta): -34.1289, -59.0637 (~2.1km del club)
+- Mercedes-Benz Centro Industrial/Logístico: -34.1205, -59.0933 (~0.85km del club)
+
+Estos puntos se guardan en `scripts/config.py` (`HOTSPOTS_CONOCIDOS`) y se suman a la búsqueda de candidatas en `scripts/copiloto.py` con un score fijo alto (95/100), independientemente de lo que diga la clasificación satelital en ese píxel puntual — el conocimiento directo de un piloto de la zona vale más que la heurística genérica ahí donde ambos coinciden en existir.
+
 ## Pipeline (orden de procesamiento)
 
 1. Definir el área de interés (AOI): polígono con las coordenadas de `04-zona-vuelo.md`.

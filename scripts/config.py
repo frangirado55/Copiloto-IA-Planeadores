@@ -17,6 +17,26 @@ AOI_BOUNDS = {
 
 CLUB_ZARATE = (-34.120, -59.084)
 
+# Hotspots conocidos: disparadores termicos confirmados por conocimiento
+# local (pilotos del club), no por clasificacion satelital. Coordenadas
+# estimadas visualmente sobre imagen Sentinel-2 (margen de error, no
+# son coordenadas oficiales/geocodificadas) - ver docs/08 para el detalle
+# de como se ubicaron.
+HOTSPOTS_CONOCIDOS = [
+    {
+        "nombre": "Toyota Argentina (planta)",
+        "lat": -34.1289,
+        "lon": -59.0637,
+        "nota": "Planta industrial grande, techo chapa. Confirmado por Franco (22/09) como disparador termico confiable.",
+    },
+    {
+        "nombre": "Mercedes-Benz Centro Industrial/Logistico",
+        "lat": -34.1205,
+        "lon": -59.0933,
+        "nota": "Complejo industrial sobre RN9. Confirmado por Franco (22/09) como disparador termico confiable.",
+    },
+]
+
 
 def get_aoi():
     b = AOI_BOUNDS

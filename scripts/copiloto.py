@@ -14,8 +14,10 @@ import numpy as np
 import rasterio
 
 from decision_maccready import POLAR_BLANIK_L13, decidir
+from config import HOTSPOTS_CONOCIDOS
 
 SCORE_TIF = "data/salida_terreno/score_termico.tif"
+SCORE_HOTSPOT_CONOCIDO = 95  # score fijo para hotspots confirmados por pilotos
 
 # Conversion score de terreno (0-100) -> fuerza termica estimada (m/s).
 # Heuristica de arranque, sin calibrar con vuelos reales todavia (ver
@@ -71,7 +73,17 @@ def mejores_candidatas(lat, lon, radio_km=10, excluir_radio_km=0.5, top_n=3, arc
             clat, clon = lats[f, c], lons[f, c]
             d = distancia_km(lat, lon, clat, clon)
             if excluir_radio_km < d <= radio_km:
-                candidatos.append({"lat": float(clat), "lon": float(clon), "score": float(score), "distancia_km": d})
+                candidatos.append({"lat": float(clat), "lon": float(clon), "score": float(score), "distancia_km": d, "fuente": "terreno (satelital)"})
+
+    # Sumar hotspots conocidos (confirmados por pilotos, no por clasificacion
+    # satelital) que caigan dentro del radio de busqueda.
+    for h in HOTSPOTS_CONOCIDOS:
+        d = distancia_km(lat, lon, h["lat"], h["lon"])
+        if excluir_radio_km < d <= radio_km:
+            candidatos.append({
+                "lat": h["lat"], "lon": h["lon"], "score": SCORE_HOTSPOT_CONOCIDO,
+                "distancia_km": d, "fuente": f"hotspot conocido: {h['nombre']}",
+            })
 
     candidatos.sort(key=lambda c: c["score"], reverse=True)
     return candidatos[:top_n]
@@ -116,7 +128,7 @@ def main():
     print(f"Candidatas evaluadas dentro del radio: {resultado.get('candidatas_evaluadas', 0)}")
     if "candidata" in resultado:
         c = resultado["candidata"]
-        print(f"Mejor candidata: {c['lat']:.4f}, {c['lon']:.4f} — score terreno {c['score']:.0f}/100, a {c['distancia_km']:.1f}km")
+        print(f"Mejor candidata: {c['lat']:.4f}, {c['lon']:.4f} — score {c['score']:.0f}/100, a {c['distancia_km']:.1f}km ({c['fuente']})")
         print(f"Fuerza estimada de la candidata: {resultado['fuerza_candidata_estimada_ms']} m/s")
     print(f"\nDECISION: {resultado['decision']}")
     print(f"Razon: {resultado['razon']}")
