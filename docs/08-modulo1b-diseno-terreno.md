@@ -63,6 +63,16 @@ Según fuentes de meteorología de vuelo a vela (ej. el manual de la FAA sobre c
    - **GeoTIFF/PNG** del mapa clasificado, para inspección visual antes de volar.
    - **GeoJSON** con polígonos/celdas y su score, para que el Módulo 3 lo consulte por código (dado un punto y un radio, devolver las N zonas candidatas con mejor score).
 
+### Mapa legible para el piloto (`scripts/mapa_claro.py`)
+
+El GeoTIFF/PNG crudo de Earth Engine no tiene leyenda ni referencias — sirve para que el código lo procese, pero no para que un piloto lo mire y entienda rápido qué zona es cuál. `scripts/mapa_claro.py` toma el `score_termico.tif` ya generado y arma una versión para humanos:
+
+- Leyenda/barra de colores explicando la escala (azul=malo, rojo=bueno).
+- Club y los dos hotspots conocidos (Toyota, Mercedes-Benz) marcados y etiquetados, con las etiquetas separadas a mano para que no se superpongan entre sí (están a menos de 2km de distancia).
+- Indicadores de dirección hacia San Andrés de Giles y hacia Baradero/río Paraná (para orientarse sin tener que leer coordenadas).
+- Norte, escala en km, título.
+- **Flecha de viento real del día** (dirección y velocidad actuales, vía GFS — ver `11-teoria-completa-termicas.md` sobre por qué el viento importa, no solo el terreno).
+
 ## Integración con el Módulo 3
 
 El Módulo 3 (IA de decisión) consulta este GeoJSON cuando evalúa térmicas candidatas y no hay datos de red OGN cerca: dado el rumbo y alcance actual del planeador, filtra las zonas dentro de ese radio y las ordena por score. Ese ranking entra como una de las "térmicas candidatas" en la comparación MacCready, con una fuerza estimada más incierta que una térmica confirmada por OGN (esto se refleja bajándole peso/confianza al dato, no tratándolo igual que una detección en vivo).

@@ -23,6 +23,7 @@ Proyecto en etapa de definición de alcance. Ver `docs/00-decision-final.md` par
 - `docs/08-modulo1b-diseno-terreno.md` — diseño técnico de la IA de lectura de terreno (Módulo 1-B): señales de entrada, pipeline de procesamiento, por qué no hace falta entrenar un modelo propio al principio, e integración con el Módulo 3.
 - `docs/09-modulo3-diseno-decision.md` — diseño técnico de la IA de decisión (Módulo 3): teoría MacCready, lógica de quedarse/virar, integración con el Módulo 1-B.
 - `docs/10-patron-diurno-temperatura.md` — investigación con datos satelitales reales (GOES-19) de cómo cambia la temperatura del terreno a lo largo del día, y el efecto de isla de calor urbana en Zárate al atardecer.
+- `docs/11-teoria-completa-termicas.md` — teoría de térmicas más allá del terreno: nubes como indicador, cómo el viento organiza las térmicas (calles de nubes), líneas de convergencia (incluida la brisa del río Paraná), y libros de referencia.
 
 ## Cómo continuar en Claude Code
 

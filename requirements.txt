@@ -3,3 +3,4 @@ geemap
 pillow
 numpy
 rasterio
+matplotlib
