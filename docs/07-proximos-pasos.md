@@ -3,7 +3,8 @@
 ## Confirmar con el club / familia
 
 - [x] **Confirmar cobertura OGN en la zona: NO hay.** Descartada definitivamente (22/09) — confirma la decisión de `00-decision-final.md` de no depender de la red FLARM/OGN. El Módulo 1 se apoya solo en el Módulo 1-B (terreno), no en Módulo 1-A (red).
-- [x] **RASP (Dr. Jack) para la zona: no se encontró cobertura.** Investigado (22/09) — no aparece ningún dominio de Argentina en las listas de instalaciones RASP públicas (las que existen son mayormente EEUU/Europa/Australia/NZ/GB). **Alternativa encontrada: SkySight** (skysight.io), sucesor moderno de RASP — múltiples fuentes independientes confirman que cubre Argentina y Brasil explícitamente, con pronóstico de térmicas/onda/convergencia/ladera. Prueba gratis 7 días, después ~USD 89/año. No se pudo verificar visualmente la cobertura exacta sobre Zárate porque este entorno tiene bloqueado el acceso directo a ese sitio (política de red) — **falta que alguien lo confirme desde su propia conexión**: entrar a skysight.io, registrar la prueba gratis, y mirar si hay datos sobre -34.12, -59.08. Ver `12-fuentes-meteo-alternativas.md`.
+- [x] **RASP (Dr. Jack): sin cobertura para Argentina** — descartado, ver `12-fuentes-meteo-alternativas.md`.
+- [x] **SkySight: confirmado que hay cobertura/uso en la zona** (papá de Franco lo confirmó, 22/09). Queda como la fuente de pronóstico meteorológico de térmicas/convergencia a integrar en una fase futura — ver `12-fuentes-meteo-alternativas.md` para el detalle y los próximos pasos concretos.
 
 ## Fase 1 — MVP de decisión (arrancar por acá)
 

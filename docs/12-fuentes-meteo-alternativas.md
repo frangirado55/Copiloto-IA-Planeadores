@@ -20,14 +20,13 @@ No se pudo verificar de forma 100% concluyente navegando el sitio directamente �
 
 Fuentes: [SkySight Soaring Weather](https://skysight.io/), [SkySight - Wings and Wheels](https://wingsandwheels.com/pilot-supplies/skysight-soaring-weather.html), [SeeYou 9.0 con SkySight - Naviter](https://naviter.com/2017/11/seeyou-9-0-con-skysight/)
 
-## Pendiente de confirmar
+## Confirmado: hay cobertura/uso real en la zona (22/09)
 
-No se pudo verificar visualmente si SkySight tiene datos concretos sobre el cuadrante exacto de vuelo (Zárate, -34.12/-59.08) — este entorno de trabajo no puede acceder directamente a `skysight.io` (bloqueado por política de red, igual que drjack.info). Falta que alguien:
+El papá de Franco confirmó que hay SkySight disponible/en uso en la zona — cierra la duda de cobertura que no se pudo verificar desde este entorno de trabajo (bloqueado el acceso directo a `skysight.io`, ver abajo).
 
-1. Entre a https://skysight.io/ desde su propia conexión.
-2. Registre la prueba gratuita de 7 días.
-3. Mire si hay datos de pronóstico (térmicas/convergencia) sobre las coordenadas del club.
-4. Si los hay, decidir si vale la pena el pago anual (~USD 89) una vez terminada la prueba, o si con lo que ya tenemos (Módulo 1-B + GFS para viento) alcanza por ahora.
+**Pendiente (no bloqueante, fase avanzada):**
+- Confirmar si el club/papá ya tiene cuenta activa de SkySight, o si haría falta la prueba gratis / suscripción propia para integrarlo al proyecto.
+- Definir cómo se conectaría con el código: SkySight tiene API para desarrolladores en algunos planes — a confirmar si el acceso que tienen la incluye, o si por ahora el uso sería solo manual (mirar la web antes de volar, no integrado al pipeline).
 
 ## Cómo encaja esto en el proyecto
 
