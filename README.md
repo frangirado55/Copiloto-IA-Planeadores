@@ -20,6 +20,7 @@ Proyecto en etapa de definición de alcance. Ver `docs/00-decision-final.md` par
 - `docs/05-notas-tecnicas.md` — apuntes técnicos sueltos (FLARM/OGN, física de cámara térmica, diferencia de temperatura en térmicas, herramientas de datos satelitales).
 - `docs/06-historial-iteraciones.md` — registro de qué enfoques se descartaron y por qué (para no repetir el mismo análisis).
 - `docs/07-proximos-pasos.md` — checklist accionable, el punto de partida para la próxima sesión de trabajo.
+- `docs/08-modulo1b-diseno-terreno.md` — diseño técnico de la IA de lectura de terreno (Módulo 1-B): señales de entrada, pipeline de procesamiento, por qué no hace falta entrenar un modelo propio al principio, e integración con el Módulo 3.
 
 ## Cómo continuar en Claude Code
 
