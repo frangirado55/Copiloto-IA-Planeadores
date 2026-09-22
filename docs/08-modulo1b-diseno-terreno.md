@@ -34,6 +34,8 @@ Lo que estos datasets **no** distinguen bien es el matiz que más importa para t
 - Water → agua (score térmico muy bajo, inhibe)
 - Built-up / cerca de rutas → disparador térmico puntual (score alto en el borde de contraste, no en el área en sí)
 
+**Calibración con conocimiento local (Franco, 22/09)**: confirmado que en la zona de Zárate las fábricas y la Ruta 9 son disparadores térmicos muy fuertes (mejor opción que un campo seco promedio), y que los lagos/ríos alrededor inhiben térmica como se esperaba. Por eso el score de la clase "Built-up" se subió de 75 a 90/100 (casi al tope, a la par del suelo desnudo) — el valor original lo subestimaba.
+
 ## Pipeline (orden de procesamiento)
 
 1. Definir el área de interés (AOI): polígono con las coordenadas de `04-zona-vuelo.md`.

@@ -28,7 +28,9 @@ WORLDCOVER_SCORE = {
     20: 60,   # Shrubland
     30: 55,   # Grassland (pastura)
     40: 70,   # Cropland (campo trabajado; se ajusta despues con NDVI/BSI)
-    50: 75,   # Built-up (urbano/rutas, disparador de termica)
+    50: 90,   # Built-up (urbano/rutas/fabricas): disparador termico clasico por
+              # contraste asfalto/chapa vs. campo. Confirmado por conocimiento
+              # local de la zona (Zarate: fabricas + Ruta 9) - ver docs/08.
     60: 85,   # Bare / sparse vegetation (suelo desnudo)
     70: 0,    # Snow / ice (no aplica a la zona)
     80: 5,    # Permanent water bodies
