@@ -99,12 +99,20 @@ def build_score(composite, worldcover):
 
     # Suelo seco/desnudo (NDVI bajo, BSI alto) sube el score dentro de cropland/grassland;
     # agua (NDWI alto) lo baja a piso, sin importar la clase base.
+    # BSI pesa mas que NDVI-bajo: BSI detecta mejor tierra realmente expuesta
+    # (mas asociado a arado), mientras que NDVI bajo solo tambien incluye
+    # rastrojo/pasto seco. La literatura de meteorologia de vuelo a vela dice
+    # que un arado seco suele dar mejor termica que un rastrojo/campo plano
+    # (los surcos actuan como colectores solares y protegen el aire caliente
+    # del viento - ver docs/08). El satelite (10m/pixel) no resuelve el
+    # ancho real de un surco (30-75cm), asi que esto es una aproximacion,
+    # no una deteccion real de arado vs rastrojo.
     ndvi = composite.select("NDVI")
     bsi = composite.select("BSI")
     ndwi = composite.select("NDWI")
 
-    dryness_boost = ndvi.multiply(-1).add(1).clamp(0, 1).multiply(15)
-    bsi_boost = bsi.clamp(0, 1).multiply(15)
+    dryness_boost = ndvi.multiply(-1).add(1).clamp(0, 1).multiply(10)
+    bsi_boost = bsi.clamp(0, 1).multiply(20)
 
     is_agri = worldcover.eq(40).Or(worldcover.eq(30))
     adjusted = base_score.add(dryness_boost.add(bsi_boost).multiply(is_agri))

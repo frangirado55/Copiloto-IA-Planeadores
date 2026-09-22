@@ -45,6 +45,12 @@ Además de calibrar la clase genérica "Built-up", se agregaron dos puntos concr
 
 Estos puntos se guardan en `scripts/config.py` (`HOTSPOTS_CONOCIDOS`) y se suman a la búsqueda de candidatas en `scripts/copiloto.py` con un score fijo alto (95/100), independientemente de lo que diga la clasificación satelital en ese píxel puntual — el conocimiento directo de un piloto de la zona vale más que la heurística genérica ahí donde ambos coinciden en existir.
 
+### Arado vs. rastrojo (investigado, 22/09)
+
+Según fuentes de meteorología de vuelo a vela (ej. el manual de la FAA sobre clima para planeadores — [AC 00-6A Cap. 16](https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC%2000-6A%20Chap%2016-index.pdf)), un **campo arado seco generalmente da mejor térmica que un rastrojo/campo plano**: los surcos actúan como pequeños colectores solares (sus caras quedan encaradas al sol) y además protegen las bolsas de aire caliente del viento mientras se desarrollan. El rastrojo es una fuente válida pero en general más débil, salvo que esté rodeado de vegetación verde (ahí el contraste ayuda).
+
+**Limitación real**: Sentinel-2 tiene 10m de resolución por píxel; un surco de arado mide 30-75cm de ancho. El satélite no puede ver la textura de los surcos — no hay forma de distinguir "arado con buenos surcos" de "campo plano recién trabajado" con esta fuente de datos. Por eso el ajuste que se pudo hacer fue indirecto: subir el peso de BSI (suelo realmente desnudo, más asociado a arado) por sobre NDVI-bajo solo (que también incluye rastrojo, pasto seco, etc.) en `build_score()` — de 15/15 a 20/10. Es una aproximación razonable, no una detección real de arado vs. rastrojo. Si en el futuro se consigue imagen de mayor resolución (ej. PlanetScope, ~3m, pago) o fotos de dron propias, ahí sí se podría distinguir mejor.
+
 ## Pipeline (orden de procesamiento)
 
 1. Definir el área de interés (AOI): polígono con las coordenadas de `04-zona-vuelo.md`.
