@@ -4,7 +4,7 @@
 
 - [x] **Confirmar cobertura OGN en la zona: NO hay.** Descartada definitivamente (22/09) — confirma la decisión de `00-decision-final.md` de no depender de la red FLARM/OGN. El Módulo 1 se apoya solo en el Módulo 1-B (terreno), no en Módulo 1-A (red).
 - [x] **RASP (Dr. Jack): sin cobertura para Argentina** — descartado, ver `12-fuentes-meteo-alternativas.md`.
-- [x] **SkySight: confirmado que hay cobertura/uso en la zona** (papá de Franco lo confirmó, 22/09). Queda como la fuente de pronóstico meteorológico de térmicas/convergencia a integrar en una fase futura — ver `12-fuentes-meteo-alternativas.md` para el detalle y los próximos pasos concretos.
+- [x] **SkySight: confirmado, con cuenta de consumidor final (sin API).** Papá de Franco lo tiene y lo usa. Sin API no se puede integrar al código — queda como consulta manual antes de volar. Ver `12-fuentes-meteo-alternativas.md`.
 
 ## Fase 1 — MVP de decisión (arrancar por acá)
 

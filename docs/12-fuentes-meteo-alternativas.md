@@ -22,11 +22,9 @@ Fuentes: [SkySight Soaring Weather](https://skysight.io/), [SkySight - Wings and
 
 ## Confirmado: hay cobertura/uso real en la zona (22/09)
 
-El papá de Franco confirmó que hay SkySight disponible/en uso en la zona — cierra la duda de cobertura que no se pudo verificar desde este entorno de trabajo (bloqueado el acceso directo a `skysight.io`, ver abajo).
+El papá de Franco confirmó que hay SkySight disponible/en uso en la zona — cierra la duda de cobertura que no se pudo verificar desde este entorno de trabajo (bloqueado el acceso directo a `skysight.io`, ver abajo). Tiene cuenta activa, pero **plan de consumidor final (solo para ver en la web), sin acceso a API**.
 
-**Pendiente (no bloqueante, fase avanzada):**
-- Confirmar si el club/papá ya tiene cuenta activa de SkySight, o si haría falta la prueba gratis / suscripción propia para integrarlo al proyecto.
-- Definir cómo se conectaría con el código: SkySight tiene API para desarrolladores en algunos planes — a confirmar si el acceso que tienen la incluye, o si por ahora el uso sería solo manual (mirar la web antes de volar, no integrado al pipeline).
+**Conclusión**: por ahora SkySight queda como **consulta manual antes de volar** (mirar la web, no conectado al código) — no se puede integrar al pipeline sin una API. Si en algún momento se evalúa upgradear el plan (tiene costo adicional sobre el de consumidor), ahí se podría reconsiderar la integración automática. No es bloqueante: el proyecto sigue funcionando con lo ya armado (Módulo 1-B + GFS para viento).
 
 ## Cómo encaja esto en el proyecto
 
