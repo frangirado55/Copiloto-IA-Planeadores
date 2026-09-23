@@ -19,7 +19,23 @@ Con: fuerza térmica actual, fuerza candidata, distancia a la candidata, altura 
 1. Calcular la velocidad óptima de crucero V\* usando como MacCready setting la fuerza de la candidata.
 2. Calcular la altura que se pierde volando a V\* hasta la candidata (hundimiento a esa velocidad × tiempo de vuelo).
 3. **Si la altura actual menos esa pérdida no deja margen de seguridad** → **quedarse**, sin importar qué tan buena sea la candidata (no se llega con seguridad).
-4. Si se llega con margen: **virar** solo si la candidata es significativamente mejor que la actual (umbral configurable, arranca en +15%) — si son parecidas, no vale la pena el riesgo/tiempo de la transición.
+4. Si se llega con margen mínimo pero no cómodo, y la candidata es significativamente mejor → **quedarse un poco más y después virar** (ver abajo).
+5. Si se llega con margen cómodo y la candidata es significativamente mejor (umbral configurable, arranca en +15%) → **virar ahora**.
+6. Si la candidata no mejora lo suficiente → **quedarse** (no vale la pena el riesgo/tiempo de la transición).
+
+## Tercer estado: "quedarse un poco más y después virar" (22/09)
+
+Pedido de Franco con un caso concreto: térmica actual 2.5 m/s, candidata 3.5 m/s — vale la pena virar, pero si el margen de altura al llegar es *justo* (por encima del mínimo de seguridad, pero no cómodo), ¿no conviene seguir centrando un poco más la térmica actual (aunque sea más floja) para juntar colchón de altura antes de partir, en vez de salir justo al límite?
+
+Sí, y es una práctica real de vuelo a vela (no es solo intuición): salir con el margen mínimo exacto no deja lugar para imprevistos (un cambio de viento, una térmica que resultó más floja de lo estimado). La lógica:
+
+- Se define un `margen_comodo_m` (por defecto, el doble del margen de seguridad — 300m si el mínimo es 150m).
+- Si la altura de llegada estimada cae **entre** el margen mínimo y el margen cómodo, y la candidata es mejor: en vez de "virar ya", se calcula cuánta altura extra hace falta para llegar al margen cómodo, y cuántos minutos tomaría ganarla centrando la térmica actual a su fuerza real (más floja, pero es la que hay ahora).
+- La recomendación pasa a ser: **"quedate ~X minutos más acá, después virá"** — con el número de minutos calculado, no una regla fija tipo "esperá 1 minuto".
+
+Ejemplo (Escenario 4 en `scripts/decision_maccready.py`): actual 2.5 m/s, candidata 3.5 m/s, 550m de altura, candidata a 6km → llegarías con 267m (117m sobre el mínimo, no cómodo) → recomienda seguir centrando ~0.8 min más (ganando ~33m) antes de virar.
+
+En el mapa de decisión (`mapa_decision.py`) este estado se ve como una línea punteada naranja (a diferencia del verde sólido de "virar ya" y el gris de "quedarse").
 
 ## Qué falta para que sea preciso (no bloqueante para probar la lógica)
 

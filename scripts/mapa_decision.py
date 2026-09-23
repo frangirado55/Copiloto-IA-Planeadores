@@ -111,11 +111,16 @@ def generar_mapa(lat, lon, altura_actual_m, fuerza_actual_ms, radio_busqueda_km=
         clat, clon = c["lat"], c["lon"]
         rumbo, distancia_km = rumbo_y_distancia(lat, lon, clat, clon)
 
-        color_decision = "limegreen" if resultado["decision"] == "VIRAR" else "gray"
+        estilos_decision = {
+            "VIRAR": ("limegreen", "-"),
+            "QUEDARSE_Y_LUEGO_VIRAR": ("orange", ":"),
+            "QUEDARSE": ("gray", "--"),
+        }
+        color_decision, linea_decision = estilos_decision.get(resultado["decision"], ("gray", "--"))
 
         ax.annotate(
             "", xy=(clon, clat), xytext=(lon, lat),
-            arrowprops=dict(arrowstyle="-|>", color=color_decision, lw=3.5, linestyle="-" if resultado["decision"] == "VIRAR" else "--"),
+            arrowprops=dict(arrowstyle="-|>", color=color_decision, lw=3.5, linestyle=linea_decision),
             zorder=7,
         )
 
@@ -168,7 +173,8 @@ def generar_mapa(lat, lon, altura_actual_m, fuerza_actual_ms, radio_busqueda_km=
     dibujar_norte(ax, 0.93, 0.90)
     dibujar_escala(ax, lat, km=max(1, round(max(max_lon - min_lon, max_lat - min_lat) * 111 / 4)))
 
-    decision_color_fondo = "#d4f7d4" if resultado["decision"] == "VIRAR" else "#e8e8e8"
+    colores_titulo = {"VIRAR": "#d4f7d4", "QUEDARSE_Y_LUEGO_VIRAR": "#ffe4b5", "QUEDARSE": "#e8e8e8"}
+    decision_color_fondo = colores_titulo.get(resultado["decision"], "#e8e8e8")
     ax.set_title(
         f"DECISIÓN: {resultado['decision']}\n{resultado['razon']}",
         fontsize=12, fontweight="bold", wrap=True,

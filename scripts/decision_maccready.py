@@ -93,11 +93,21 @@ def decidir(
     altura_actual_m,
     polar=POLAR_BLANIK_L13,
     margen_seguridad_m=150,
+    margen_comodo_m=None,
     umbral_mejora=1.15,
 ):
-    """Recomienda 'QUEDARSE' o 'VIRAR', con el razonamiento y los
-    numeros intermedios usados.
+    """Recomienda 'QUEDARSE', 'VIRAR' o 'QUEDARSE_Y_LUEGO_VIRAR', con el
+    razonamiento y los numeros intermedios usados.
+
+    'QUEDARSE_Y_LUEGO_VIRAR': la candidata es mejor y se llega, pero con
+    un margen justo (entre margen_seguridad_m y margen_comodo_m) — en vez
+    de partir ya, conviene seguir centrando la termica actual unos
+    minutos mas para juntar colchon de altura, y recien ahi virar.
+    margen_comodo_m por defecto es el doble de margen_seguridad_m.
     """
+    if margen_comodo_m is None:
+        margen_comodo_m = margen_seguridad_m * 2
+
     v_optima = velocidad_optima_crucero(fuerza_candidata_ms, polar)
     hundimiento_v_optima = polar.hundimiento(v_optima)
     altura_perdida = altura_perdida_en_transito(distancia_candidata_km, v_optima, hundimiento_v_optima)
@@ -118,12 +128,35 @@ def decidir(
         )
         return resultado
 
-    if fuerza_candidata_ms >= fuerza_actual_ms * umbral_mejora:
+    candidata_mejor = fuerza_candidata_ms >= fuerza_actual_ms * umbral_mejora
+
+    if candidata_mejor and altura_llegada < margen_comodo_m:
+        # Se llega con seguridad pero justo, no comodo. Calcular cuanto
+        # falta girar en la termica actual (mas floja) para juntar el
+        # colchon extra antes de partir.
+        altura_necesaria = margen_comodo_m + altura_perdida
+        altura_extra = altura_necesaria - altura_actual_m
+        tiempo_extra_seg = altura_extra / fuerza_actual_ms
+        tiempo_extra_min = tiempo_extra_seg / 60
+
+        resultado["decision"] = "QUEDARSE_Y_LUEGO_VIRAR"
+        resultado["minutos_extra_antes_de_virar"] = round(tiempo_extra_min, 1)
+        resultado["altura_extra_necesaria_m"] = round(altura_extra, 0)
+        resultado["razon"] = (
+            f"La candidata ({fuerza_candidata_ms:.1f} m/s) es mejor que la actual "
+            f"({fuerza_actual_ms:.1f} m/s), pero el margen al llegar ({altura_llegada - margen_seguridad_m:.0f}m "
+            f"sobre el minimo) es justo, no comodo. Conviene seguir centrando "
+            f"~{tiempo_extra_min:.1f} min mas acá (ganando ~{altura_extra:.0f}m a {fuerza_actual_ms:.1f} m/s) "
+            f"y recien ahi virar, para llegar con {margen_comodo_m - margen_seguridad_m:.0f}m de margen extra en vez de justo."
+        )
+        return resultado
+
+    if candidata_mejor:
         resultado["decision"] = "VIRAR"
         resultado["razon"] = (
             f"La candidata ({fuerza_candidata_ms:.1f} m/s) supera a la actual "
             f"({fuerza_actual_ms:.1f} m/s) por mas del umbral ({(umbral_mejora - 1) * 100:.0f}%), "
-            f"y se llega con {altura_llegada - margen_seguridad_m:.0f}m de margen extra."
+            f"y se llega con {altura_llegada - margen_seguridad_m:.0f}m de margen extra (comodo)."
         )
     else:
         resultado["decision"] = "QUEDARSE"
@@ -173,6 +206,16 @@ def main():
         altura_actual_m=1000,
     )
     imprimir_decision("Escenario 3: candidata similar, no vale la pena cambiar", r3)
+
+    # Escenario 4: candidata bastante mejor pero margen justo -> deberia
+    # sugerir quedarse un poco mas y despues virar (no ahora mismo)
+    r4 = decidir(
+        fuerza_actual_ms=2.5,
+        fuerza_candidata_ms=3.5,
+        distancia_candidata_km=6,
+        altura_actual_m=550,
+    )
+    imprimir_decision("Escenario 4: candidata mejor pero margen justo -> esperar y virar", r4)
 
 
 if __name__ == "__main__":
