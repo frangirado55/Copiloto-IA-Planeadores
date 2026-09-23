@@ -73,6 +73,29 @@ El GeoTIFF/PNG crudo de Earth Engine no tiene leyenda ni referencias — sirve p
 - Norte, escala en km, título.
 - **Flecha de viento real del día** (dirección y velocidad actuales, vía GFS — ver `11-teoria-completa-termicas.md` sobre por qué el viento importa, no solo el terreno).
 
+Este mapa es de referencia general (toda la zona) — no muestra dónde está el piloto en un vuelo puntual ni hacia dónde le conviene ir. Para eso está el mapa de decisión (siguiente sección).
+
+### Mapa de decisión para un vuelo puntual (`scripts/mapa_decision.py`)
+
+Feedback directo de Franco: el mapa general no dejaba claro "dónde estoy yo" ni "hacia dónde es la térmica sugerida". Este mapa resuelve eso — conecta visualmente la salida de `copiloto.py` (Módulo 3) con el mapa de terreno:
+
+- **Vos** (círculo azul grande) en tu posición actual, con altura y fuerza de la térmica actual.
+- **Candidata** (estrella, verde si conviene virar / gris si conviene quedarse) en la zona sugerida, con su score y fuerza estimada.
+- **Línea de ruta** entre ambos puntos, con distancia y rumbo (en grados y en las 16 puntas: N, NNE, NE...) — línea sólida verde si conviene virar, punteada gris si no.
+- **Recuadro de decisión** arriba de todo, con la razón en texto plano.
+- Viento actual, norte, escala — igual que el mapa general, pero con **zoom automático** a la zona entre el piloto y la candidata (no la zona completa), para que se vean bien los detalles del terreno cerca de la ruta.
+
+**Detalle de diseño (por qué las cajas de texto están en las esquinas, no pegadas a cada punto)**: la primera versión ponía las etiquetas justo al lado de cada marcador, pero cuando el punto caía cerca del borde del mapa, el texto se cortaba contra el borde de la figura o contra la barra de colores — no hay una sola regla de "para qué lado offsetear" que funcione siempre. La solución fue anclar las cajas de VOS y CANDIDATA en esquinas fijas de la figura (arriba-izquierda y abajo-derecha) con una línea fina que señala al punto real — así nunca se cortan, sin importar dónde caiga el punto en el mapa.
+
+Uso:
+```
+python3 scripts/mapa_decision.py --lat -34.10 --lon -59.15 --altura 1200 --fuerza 1.2
+```
+
+### `scripts/mapa_utils.py`
+
+Funciones compartidas entre `mapa_claro.py` y `mapa_decision.py` (colores, norte, escala, consulta de viento) — antes estaban duplicadas en cada script, ahora viven en un solo lugar.
+
 ## Integración con el Módulo 3
 
 El Módulo 3 (IA de decisión) consulta este GeoJSON cuando evalúa térmicas candidatas y no hay datos de red OGN cerca: dado el rumbo y alcance actual del planeador, filtra las zonas dentro de ese radio y las ordena por score. Ese ranking entra como una de las "térmicas candidatas" en la comparación MacCready, con una fuerza estimada más incierta que una térmica confirmada por OGN (esto se refleja bajándole peso/confianza al dato, no tratándolo igual que una detección en vivo).

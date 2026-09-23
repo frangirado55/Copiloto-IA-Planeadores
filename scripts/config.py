@@ -11,7 +11,7 @@ KEY_PATH = "credentials/earth-engine-key.json"
 AOI_BOUNDS = {
     "min_lon": -59.50,
     "min_lat": -34.45,
-    "max_lon": -59.08,
+    "max_lon": -59.00,  # extendido desde -59.08 para incluir la planta de Toyota (-59.0637)
     "max_lat": -33.80,
 }
 

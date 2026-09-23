@@ -31,7 +31,8 @@
 - [x] Diseño técnico del módulo — ver `08-modulo1b-diseno-terreno.md`.
 - [x] Script funcional (`scripts/analizar_terreno.py`): arma mosaico Sentinel-2 sin nubes, calcula NDVI/NDWI/BSI, cruza con ESA WorldCover y genera mapa de score de potencial térmico (PNG + GeoTIFF). Corrido con éxito sobre el cuadrante Zárate-Giles-Baradero (score promedio 61/100, rango 5-87).
 - [x] Consulta por punto+radio resuelta directamente sobre el GeoTIFF (`mejores_candidatas()` en `scripts/copiloto.py`, vía rasterio) — no hizo falta un GeoJSON aparte.
-- [ ] Revisar visualmente el mapa de score contra el conocimiento real de la zona (¿tiene sentido dónde marca alto/bajo?) y ajustar los pesos de la heurística si hace falta.
+- [x] Revisar visualmente el mapa de score contra el conocimiento real de la zona — hecho, llevó a los ajustes de hotspots y arado/rastrojo.
+- [x] Mapa legible para uso general (`scripts/mapa_claro.py`) y mapa de decisión por vuelo puntual (`scripts/mapa_decision.py`, muestra posición del piloto + térmica sugerida + ruta) — feedback de Franco sobre falta de claridad, resuelto.
 - [ ] Bajar DEM (SRTM) de la misma zona (pendiente, hoy el script no lo usa — la zona es chata y pesa poco, pero falta sumarlo para el borde del Delta).
 
 ## Roles (pendiente definir con Fran)
