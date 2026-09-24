@@ -9,12 +9,14 @@ data/salida_terreno/score_termico.tif).
 """
 
 import math
+import datetime
 
 import numpy as np
 import rasterio
 
 from decision_maccready import POLAR_BLANIK_L13, decidir
 from config import HOTSPOTS_CONOCIDOS
+from patron_horario import multiplicador_horario
 
 SCORE_TIF = "data/salida_terreno/score_termico.tif"
 SCORE_HOTSPOT_CONOCIDO = 95  # score fijo para hotspots confirmados por pilotos
@@ -89,16 +91,28 @@ def mejores_candidatas(lat, lon, radio_km=10, excluir_radio_km=0.5, top_n=3, arc
     return candidatos[:top_n]
 
 
-def recomendar(lat, lon, altura_actual_m, fuerza_actual_ms, radio_busqueda_km=10, polar=POLAR_BLANIK_L13):
+def recomendar(lat, lon, altura_actual_m, fuerza_actual_ms, radio_busqueda_km=10, polar=POLAR_BLANIK_L13, hora_local=None):
     """Pipeline completo: busca candidatas en el mapa de terreno y le pide
     al Modulo 3 que decida sobre la mejor.
+
+    hora_local: hora decimal (ej 14.5 = 14:30) para aplicar el
+    multiplicador horario a la fuerza estimada de la candidata (ver
+    patron_horario.py). Si no se pasa, usa la hora actual en Argentina.
+    La fuerza_actual_ms NO se ajusta por hora porque es un dato real del
+    variometro, no una estimacion.
     """
+    if hora_local is None:
+        hora_local = (datetime.datetime.utcnow() - datetime.timedelta(hours=3)).hour + \
+                     (datetime.datetime.utcnow() - datetime.timedelta(hours=3)).minute / 60
+
     candidatas = mejores_candidatas(lat, lon, radio_km=radio_busqueda_km)
     if not candidatas:
         return {"decision": "QUEDARSE", "razon": f"No se encontraron zonas candidatas dentro de {radio_busqueda_km}km."}
 
     mejor = candidatas[0]
-    fuerza_candidata_ms = score_a_fuerza_ms(mejor["score"])
+    es_hotspot = mejor["fuente"].startswith("hotspot conocido")
+    mult_horario = multiplicador_horario(hora_local, es_hotspot=es_hotspot)
+    fuerza_candidata_ms = score_a_fuerza_ms(mejor["score"]) * mult_horario
 
     resultado = decidir(
         fuerza_actual_ms=fuerza_actual_ms,
@@ -109,6 +123,8 @@ def recomendar(lat, lon, altura_actual_m, fuerza_actual_ms, radio_busqueda_km=10
     )
     resultado["candidata"] = mejor
     resultado["fuerza_candidata_estimada_ms"] = round(fuerza_candidata_ms, 2)
+    resultado["multiplicador_horario"] = round(mult_horario, 2)
+    resultado["hora_local_usada"] = round(hora_local, 2)
     resultado["candidatas_evaluadas"] = len(candidatas)
     return resultado
 
@@ -129,7 +145,8 @@ def main():
     if "candidata" in resultado:
         c = resultado["candidata"]
         print(f"Mejor candidata: {c['lat']:.4f}, {c['lon']:.4f} — score {c['score']:.0f}/100, a {c['distancia_km']:.1f}km ({c['fuente']})")
-        print(f"Fuerza estimada de la candidata: {resultado['fuerza_candidata_estimada_ms']} m/s")
+        print(f"Hora usada: {resultado['hora_local_usada']}hs | multiplicador horario: {resultado['multiplicador_horario']}")
+        print(f"Fuerza estimada de la candidata (ya ajustada por hora): {resultado['fuerza_candidata_estimada_ms']} m/s")
     print(f"\nDECISION: {resultado['decision']}")
     print(f"Razon: {resultado['razon']}")
 

@@ -25,7 +25,12 @@ Ver el gráfico enviado en el chat. Dos hallazgos concretos:
 
 Hoy `scripts/analizar_terreno.py` y `scripts/copiloto.py` calculan el score de potencial térmico **sin considerar la hora del día** — un campo seco puntúa igual a las 8am que a las 5pm, lo cual sabemos que no es realista. Un próximo paso natural sería:
 
-- Agregar un multiplicador de score según la hora (bajo a la mañana temprano/tarde-noche, alto entre las 11 y las 16hs), calibrado con esta curva.
-- Para las clases "Built-up"/hotspots conocidos, extender la ventana de score alto un poco más hacia el atardecer que para el campo abierto, reflejando la isla de calor urbana medida acá.
+## Implementado (24/09): `scripts/patron_horario.py`
 
-No se implementó todavía porque es una funcionalidad nueva (no una corrección de algo existente) — queda para decidir si se prioriza.
+Se agregó el multiplicador horario, usando directamente esta curva medida (no una forma inventada tipo campana genérica): la tabla hora→temperatura de la corrida del 17/09 (rural y urbana por separado) se normaliza a un multiplicador 0-1 (0°C o menos → 0, el pico medido ~30.4°C → 1), interpolando entre horas.
+
+`copiloto.py` lo aplica en `recomendar()`: la fuerza estimada de una candidata (`score_a_fuerza_ms(score)`) se multiplica por `multiplicador_horario(hora_local, es_hotspot)` antes de pasarla al Módulo 3. Se usa la curva urbana (que se mantiene alta más tarde, por la isla de calor) para hotspots conocidos, y la rural para el resto. La fuerza de la térmica **actual** no se ajusta — es un dato real del variómetro, no una estimación.
+
+Probado con la misma posición a distintas horas: a las 8hs la candidata (Toyota, hotspot) estima 1.28 m/s y el sistema recomienda quedarse; a las 14hs (pico) la misma candidata estima 3.8 m/s y recomienda virar. Antes de este cambio daba exactamente lo mismo a cualquier hora del día.
+
+**Limitación**: la tabla horaria es de un solo día despejado de septiembre (primavera) — no varía todavía por estación del año (un día de diciembre probablemente calienta antes y más fuerte que uno de septiembre). Cuando haya más mediciones de distintas épocas, se puede ajustar.
