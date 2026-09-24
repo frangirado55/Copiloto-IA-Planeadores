@@ -25,6 +25,7 @@ Proyecto en etapa de definición de alcance. Ver `docs/00-decision-final.md` par
 - `docs/10-patron-diurno-temperatura.md` — investigación con datos satelitales reales (GOES-19) de cómo cambia la temperatura del terreno a lo largo del día, y el efecto de isla de calor urbana en Zárate al atardecer.
 - `docs/11-teoria-completa-termicas.md` — teoría de térmicas más allá del terreno: nubes como indicador, cómo el viento organiza las térmicas (calles de nubes), líneas de convergencia (incluida la brisa del río Paraná), y libros de referencia.
 - `docs/12-fuentes-meteo-alternativas.md` — investigación de RASP (sin cobertura para Argentina) y SkySight (alternativa con cobertura confirmada, pendiente de verificar sobre la zona exacta).
+- `docs/13-zona-escape-aterrizaje.md` — módulo de seguridad: alcance máximo de planeo y zonas seguras para aterrizaje de emergencia, distinto del score de potencial térmico.
 
 ## Cómo continuar en Claude Code
 

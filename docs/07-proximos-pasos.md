@@ -35,6 +35,20 @@
 - [x] Mapa legible para uso general (`scripts/mapa_claro.py`) y mapa de decisión por vuelo puntual (`scripts/mapa_decision.py`, muestra posición del piloto + térmica sugerida + ruta) — feedback de Franco sobre falta de claridad, resuelto.
 - [ ] Bajar DEM (SRTM) de la misma zona (pendiente, hoy el script no lo usa — la zona es chata y pesa poco, pero falta sumarlo para el borde del Delta).
 
+## Zona de escape / aterrizaje de emergencia (24/09, idea de Franco)
+
+- [x] Alcance máximo de planeo (`mejor_planeo()`, `alcance_maximo_km()` en `decision_maccready.py`).
+- [x] Score de aptitud de aterrizaje distinto del de térmica, y búsqueda de zonas seguras (`scripts/zona_aterrizaje.py`) + mapa (`scripts/mapa_aterrizaje.py`) — ver `13-zona-escape-aterrizaje.md`.
+- [ ] Sumar coordenadas de los aeroclubes de San Andrés de Giles y Baradero (si los tienen) como destinos alternativos al club de Zárate.
+- [ ] Orientar el cono de planeo con el viento del día (hoy es un círculo completo) — ídea pendiente, no bloqueante.
+
+## Ideas evaluadas y descartadas por ahora (24/09)
+
+Franco trajo una lista grande de ideas (interfaz de audio/pantalla, filtrado por coeficiente del planeador vía OGN, "térmicas fantasma", filtro de rivales en competencia, efecto río Paraná dinámico). Triage:
+- **Requieren red OGN** (coeficiente del planeador, térmicas fantasma, filtro de rivales): descartadas por ahora — no hay cobertura OGN en la zona (ver `06-historial-iteraciones.md`). Si algún día arman una estación receptora propia, se reconsideran.
+- **Requieren la app/interfaz real** (canal de alertas, tonos, pantalla de modo térmica, botón de resumen de voz): no bloqueantes, pero necesitan primero la interfaz para celular que todavía no se armó.
+- **Efecto río Paraná dinámico**: buena idea, quedó como próxima candidata después de esta (zona de escape) — no implementada todavía.
+
 ## Roles (pendiente definir con Fran)
 
 - [ ] Definir quién se enfoca en qué: lógica de decisión (software/matemática) vs. hardware/integración/pruebas en vuelo.

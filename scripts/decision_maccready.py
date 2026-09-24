@@ -86,6 +86,33 @@ def altura_perdida_en_transito(distancia_km, v_kmh, hundimiento_ms):
     return hundimiento_ms * tiempo_seg
 
 
+def mejor_planeo(polar, v_min_kmh=60, v_max_kmh=200, paso_kmh=1):
+    """Velocidad (km/h) y relacion de planeo (L/D) que dan el maximo
+    alcance por metro de altura, sin asumir que se va a encontrar otra
+    termica (a diferencia de velocidad_optima_crucero, que optimiza
+    velocidad media asumiendo un MacCready setting). Es el numero a usar
+    para "hasta donde llego si no encuentro nada mas" (zona de escape).
+    """
+    mejor_v = v_min_kmh
+    mejor_ld = -np.inf
+    for v in np.arange(v_min_kmh, v_max_kmh + paso_kmh, paso_kmh):
+        hundimiento = polar.hundimiento(v)
+        ld = (v / 3.6) / hundimiento  # metros de avance por metro de altura
+        if ld > mejor_ld:
+            mejor_ld = ld
+            mejor_v = v
+    return mejor_v, mejor_ld
+
+
+def alcance_maximo_km(altura_actual_m, polar, factor_seguridad=0.8):
+    """Distancia maxima (km) alcanzable planeando a la mejor relacion de
+    planeo, con un factor de seguridad (por defecto 80% del alcance
+    teorico, para cubrir viento en contra, termicas de descenso, y
+    errores de estimacion de la polar/altura)."""
+    _, ld = mejor_planeo(polar)
+    return (altura_actual_m * ld / 1000) * factor_seguridad
+
+
 def decidir(
     fuerza_actual_ms,
     fuerza_candidata_ms,
