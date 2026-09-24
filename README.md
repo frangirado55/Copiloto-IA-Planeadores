@@ -26,6 +26,7 @@ Proyecto en etapa de definición de alcance. Ver `docs/00-decision-final.md` par
 - `docs/11-teoria-completa-termicas.md` — teoría de térmicas más allá del terreno: nubes como indicador, cómo el viento organiza las térmicas (calles de nubes), líneas de convergencia (incluida la brisa del río Paraná), y libros de referencia.
 - `docs/12-fuentes-meteo-alternativas.md` — investigación de RASP (sin cobertura para Argentina) y SkySight (alternativa con cobertura confirmada, pendiente de verificar sobre la zona exacta).
 - `docs/13-zona-escape-aterrizaje.md` — módulo de seguridad: alcance máximo de planeo y zonas seguras para aterrizaje de emergencia, distinto del score de potencial térmico.
+- `docs/14-efecto-rio-dinamico.md` — cuántos km tierra adentro se extiende la franja fría del río Paraná, calculado según el viento real del día (no un valor fijo).
 
 ## Cómo continuar en Claude Code
 

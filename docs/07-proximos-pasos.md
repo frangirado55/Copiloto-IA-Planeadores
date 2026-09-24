@@ -47,7 +47,7 @@
 Franco trajo una lista grande de ideas (interfaz de audio/pantalla, filtrado por coeficiente del planeador vía OGN, "térmicas fantasma", filtro de rivales en competencia, efecto río Paraná dinámico). Triage:
 - **Requieren red OGN** (coeficiente del planeador, térmicas fantasma, filtro de rivales): descartadas por ahora — no hay cobertura OGN en la zona (ver `06-historial-iteraciones.md`). Si algún día arman una estación receptora propia, se reconsideran.
 - **Requieren la app/interfaz real** (canal de alertas, tonos, pantalla de modo térmica, botón de resumen de voz): no bloqueantes, pero necesitan primero la interfaz para celular que todavía no se armó.
-- **Efecto río Paraná dinámico**: buena idea, quedó como próxima candidata después de esta (zona de escape) — no implementada todavía.
+- **Efecto río Paraná dinámico**: ✅ implementado (24/09) — `scripts/efecto_rio.py`, ver `14-efecto-rio-dinamico.md`. Calcula la penetración de la franja fría según viento real del día. Falta conectarlo al pipeline de decisión (`copiloto.py`), hoy es standalone.
 
 ## Roles (pendiente definir con Fran)
 
