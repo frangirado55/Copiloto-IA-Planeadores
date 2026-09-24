@@ -46,3 +46,9 @@ Pregunta de Franco: "¿y el calor no medís?" — tenía razón, el multiplicado
 `copiloto.py` ahora usa `multiplicador_en_vivo()` en vez de `multiplicador_horario()` directamente, y guarda en el resultado de qué fuente salió el número (`fuente_multiplicador`: `en_vivo` o `respaldo_por_hora`), para poder distinguir cuándo la recomendación se basó en clima real vs. una suposición.
 
 **Bug encontrado en el camino**: `copiloto.py` nunca inicializaba Earth Engine por su cuenta (antes no lo necesitaba, la búsqueda de candidatas es puramente local con rasterio) — la medición en vivo fallaba silenciosamente y siempre caía al respaldo. Se corrigió agregando `init_earth_engine()` al arranque de `main()`.
+
+## Temperatura de aire general (24/09, mismo día): "¿hace frío o calor?"
+
+Pedido de Franco: mostrar el clima general (frío/calor), no solo el número técnico usado para calcular térmicas. Es una medición **distinta** de `temperatura_actual_c()` (que mide temperatura de *superficie* vía GOES, específica para estimar térmicas) — acá se usa `obtener_temperatura_aire_actual()` en `mapa_utils.py`, que consulta **temperatura de aire a 2 metros** vía GFS (banda `temperature_2m_above_ground`, la misma fuente que ya se usaba para el viento), con una descripción en palabras (frío / fresco / templado / caluroso / mucho calor, según rangos de °C).
+
+Se agregó al cuadro de viento que ya aparecía en `mapa_claro.py` y `mapa_decision.py` — ahora dice, por ejemplo, "Viento: 16 km/h desde el N · 20°C (templado)".

@@ -48,6 +48,49 @@ def obtener_viento_actual(lat, lon):
     }
 
 
+def obtener_temperatura_aire_actual(lat, lon):
+    """Temperatura de aire a 2m (grados C) mas reciente disponible (GFS)
+    -- distinta de temperatura_actual_c() en patron_horario.py, que mide
+    temperatura de SUPERFICIE (GOES) para estimar termicas. Esta es la
+    temperatura de aire "de sentir", para dar una nocion general de si
+    hace frio o calor, no para el calculo de termicas."""
+    punto = ee.Geometry.Point([lon, lat])
+    col = (
+        ee.ImageCollection("NOAA/GFS0P25")
+        .filterDate(
+            (datetime.datetime.utcnow() - datetime.timedelta(hours=36)).strftime("%Y-%m-%dT%H:%M:%S"),
+            (datetime.datetime.utcnow() + datetime.timedelta(hours=6)).strftime("%Y-%m-%dT%H:%M:%S"),
+        )
+        .filterBounds(punto)
+        .filter(ee.Filter.eq("forecast_hours", 0))
+        .sort("system:time_start", False)
+    )
+    img = col.first()
+    temp_c = img.select("temperature_2m_above_ground").reduceRegion(ee.Reducer.first(), punto, 25000).get(
+        "temperature_2m_above_ground"
+    ).getInfo()
+    t_ms = img.get("system:time_start").getInfo()
+    hora_utc = datetime.datetime.utcfromtimestamp(t_ms / 1000)
+    return {
+        "temperatura_c": temp_c,
+        "descripcion": descripcion_clima(temp_c),
+        "hora_local": hora_utc - datetime.timedelta(hours=3),
+    }
+
+
+def descripcion_clima(temp_c):
+    if temp_c < 10:
+        return "frío"
+    elif temp_c < 18:
+        return "fresco"
+    elif temp_c < 26:
+        return "templado"
+    elif temp_c < 32:
+        return "caluroso"
+    else:
+        return "mucho calor"
+
+
 def rumbo_16_puntas(rumbo_deg):
     rumbos = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSO", "SO", "OSO", "O", "ONO", "NO", "NNO"]
     idx = round(rumbo_deg / 22.5) % 16

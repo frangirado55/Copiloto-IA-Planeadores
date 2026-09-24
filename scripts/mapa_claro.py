@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import FancyArrow
 
 from config import init_earth_engine, get_aoi, CLUB_ZARATE, HOTSPOTS_CONOCIDOS
-from mapa_utils import CMAP_SCORE, obtener_viento_actual, dibujar_norte, dibujar_escala, rumbo_16_puntas
+from mapa_utils import CMAP_SCORE, obtener_viento_actual, obtener_temperatura_aire_actual, dibujar_norte, dibujar_escala, rumbo_16_puntas
 
 SCORE_TIF = "data/salida_terreno/score_termico.tif"
 OUT_PATH = "data/salida_terreno/mapa_claro.png"
@@ -76,9 +76,10 @@ def main():
         ax.text(x, y, texto, fontsize=10, ha=ha, va=va, style="italic",
                  bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="gray", alpha=0.75))
 
-    print("Consultando viento actual (GFS)...")
+    print("Consultando viento y temperatura actual (GFS)...")
     try:
         viento = obtener_viento_actual(club_lat, club_lon)
+        clima = obtener_temperatura_aire_actual(club_lat, club_lon)
         cx, cy = club_lon, bounds.bottom + 0.05
         largo = 0.06
         dx = largo * math.sin(math.radians(viento["rumbo_hacia_deg"]))
@@ -87,7 +88,8 @@ def main():
                                   color="black", zorder=7))
         ax.text(
             cx, cy - 0.025,
-            f"Viento: {viento['velocidad_kmh']:.0f} km/h desde el {rumbo_16_puntas(viento['rumbo_desde_deg'])}\n({viento['hora_local'].strftime('%d/%m %H:%M')} hora local)",
+            f"Viento: {viento['velocidad_kmh']:.0f} km/h desde el {rumbo_16_puntas(viento['rumbo_desde_deg'])} · "
+            f"{clima['temperatura_c']:.0f}°C ({clima['descripcion']})\n({viento['hora_local'].strftime('%d/%m %H:%M')} hora local)",
             fontsize=9, ha="center",
             bbox=dict(boxstyle="round,pad=0.3", fc="lightyellow", ec="black", alpha=0.85), zorder=7,
         )

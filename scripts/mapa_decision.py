@@ -24,7 +24,7 @@ from matplotlib.patches import FancyArrow
 
 from config import init_earth_engine, CLUB_ZARATE
 from copiloto import recomendar, SCORE_TIF
-from mapa_utils import CMAP_SCORE, obtener_viento_actual, dibujar_norte, dibujar_escala, rumbo_16_puntas
+from mapa_utils import CMAP_SCORE, obtener_viento_actual, obtener_temperatura_aire_actual, dibujar_norte, dibujar_escala, rumbo_16_puntas
 
 OUT_PATH = "data/salida_terreno/mapa_decision.png"
 
@@ -152,6 +152,7 @@ def generar_mapa(lat, lon, altura_actual_m, fuerza_actual_ms, radio_busqueda_km=
     print("Consultando viento actual...")
     try:
         viento = obtener_viento_actual(lat, lon)
+        clima = obtener_temperatura_aire_actual(lat, lon)
         # Zona libre: arriba al centro (esquinas ya ocupadas por VOS,
         # norte y candidata).
         largo = (max_lon - min_lon) * 0.06
@@ -163,7 +164,8 @@ def generar_mapa(lat, lon, altura_actual_m, fuerza_actual_ms, radio_busqueda_km=
                                   color="black", zorder=7))
         ax.text(
             cx, cy - (max_lat - min_lat) * 0.06,
-            f"Viento: {viento['velocidad_kmh']:.0f} km/h desde el {rumbo_16_puntas(viento['rumbo_desde_deg'])}",
+            f"Viento: {viento['velocidad_kmh']:.0f} km/h desde el {rumbo_16_puntas(viento['rumbo_desde_deg'])} · "
+            f"{clima['temperatura_c']:.0f}°C ({clima['descripcion']})",
             fontsize=8, ha="center",
             bbox=dict(boxstyle="round,pad=0.25", fc="lightyellow", ec="black", alpha=0.85), zorder=7,
         )
