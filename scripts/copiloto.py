@@ -15,8 +15,8 @@ import numpy as np
 import rasterio
 
 from decision_maccready import POLAR_BLANIK_L13, decidir
-from config import HOTSPOTS_CONOCIDOS
-from patron_horario import multiplicador_horario
+from config import HOTSPOTS_CONOCIDOS, init_earth_engine
+from patron_horario import multiplicador_en_vivo
 
 SCORE_TIF = "data/salida_terreno/score_termico.tif"
 SCORE_HOTSPOT_CONOCIDO = 95  # score fijo para hotspots confirmados por pilotos
@@ -111,7 +111,7 @@ def recomendar(lat, lon, altura_actual_m, fuerza_actual_ms, radio_busqueda_km=10
 
     mejor = candidatas[0]
     es_hotspot = mejor["fuente"].startswith("hotspot conocido")
-    mult_horario = multiplicador_horario(hora_local, es_hotspot=es_hotspot)
+    mult_horario, fuente_mult = multiplicador_en_vivo(mejor["lat"], mejor["lon"], es_hotspot=es_hotspot, hora_decimal=hora_local)
     fuerza_candidata_ms = score_a_fuerza_ms(mejor["score"]) * mult_horario
 
     resultado = decidir(
@@ -124,12 +124,15 @@ def recomendar(lat, lon, altura_actual_m, fuerza_actual_ms, radio_busqueda_km=10
     resultado["candidata"] = mejor
     resultado["fuerza_candidata_estimada_ms"] = round(fuerza_candidata_ms, 2)
     resultado["multiplicador_horario"] = round(mult_horario, 2)
+    resultado["fuente_multiplicador"] = fuente_mult
     resultado["hora_local_usada"] = round(hora_local, 2)
     resultado["candidatas_evaluadas"] = len(candidatas)
     return resultado
 
 
 def main():
+    init_earth_engine()
+
     # Ejemplo: planeador centrando una termica floja cerca del club, con
     # buena altura, buscando alternativas en 10km a la redonda.
     lat, lon = -34.10, -59.15
@@ -145,8 +148,8 @@ def main():
     if "candidata" in resultado:
         c = resultado["candidata"]
         print(f"Mejor candidata: {c['lat']:.4f}, {c['lon']:.4f} — score {c['score']:.0f}/100, a {c['distancia_km']:.1f}km ({c['fuente']})")
-        print(f"Hora usada: {resultado['hora_local_usada']}hs | multiplicador horario: {resultado['multiplicador_horario']}")
-        print(f"Fuerza estimada de la candidata (ya ajustada por hora): {resultado['fuerza_candidata_estimada_ms']} m/s")
+        print(f"Hora: {resultado['hora_local_usada']}hs | multiplicador: {resultado['multiplicador_horario']} (fuente: {resultado['fuente_multiplicador']})")
+        print(f"Fuerza estimada de la candidata (ya ajustada por calor real u hora): {resultado['fuerza_candidata_estimada_ms']} m/s")
     print(f"\nDECISION: {resultado['decision']}")
     print(f"Razon: {resultado['razon']}")
 

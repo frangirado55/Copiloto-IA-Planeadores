@@ -33,4 +33,16 @@ Se agregó el multiplicador horario, usando directamente esta curva medida (no u
 
 Probado con la misma posición a distintas horas: a las 8hs la candidata (Toyota, hotspot) estima 1.28 m/s y el sistema recomienda quedarse; a las 14hs (pico) la misma candidata estima 3.8 m/s y recomienda virar. Antes de este cambio daba exactamente lo mismo a cualquier hora del día.
 
-**Limitación**: la tabla horaria es de un solo día despejado de septiembre (primavera) — no varía todavía por estación del año (un día de diciembre probablemente calienta antes y más fuerte que uno de septiembre). Cuando haya más mediciones de distintas épocas, se puede ajustar.
+**Limitación (resuelta el mismo día, ver abajo)**: la tabla horaria era de un solo día despejado de septiembre — no medía el clima real de hoy (un día nublado o más frío daría el mismo multiplicador que uno despejado, solo por compartir la hora).
+
+## Corregido (24/09, mismo día): medición en vivo, no solo tabla histórica
+
+Pregunta de Franco: "¿y el calor no medís?" — tenía razón, el multiplicador horario usaba una curva fija en vez de medir la temperatura real del momento, a pesar de que ya sabíamos cómo pedirle esa medición a GOES-19 (la misma metodología de este documento). Se agregó `temperatura_actual_c()` y `multiplicador_en_vivo()` en `patron_horario.py`:
+
+- Consulta GOES-19 en vivo (últimos ~40 minutos), con la misma corrección de escala/offset y filtro de nubes (DQF) que se validó acá.
+- Si hay dato disponible, ese es el que se usa (no la tabla).
+- Si no hay dato (nublado, sin imagen reciente, falla de red) → cae a la tabla histórica de este documento como respaldo, no se rompe la recomendación.
+
+`copiloto.py` ahora usa `multiplicador_en_vivo()` en vez de `multiplicador_horario()` directamente, y guarda en el resultado de qué fuente salió el número (`fuente_multiplicador`: `en_vivo` o `respaldo_por_hora`), para poder distinguir cuándo la recomendación se basó en clima real vs. una suposición.
+
+**Bug encontrado en el camino**: `copiloto.py` nunca inicializaba Earth Engine por su cuenta (antes no lo necesitaba, la búsqueda de candidatas es puramente local con rasterio) — la medición en vivo fallaba silenciosamente y siempre caía al respaldo. Se corrigió agregando `init_earth_engine()` al arranque de `main()`.
