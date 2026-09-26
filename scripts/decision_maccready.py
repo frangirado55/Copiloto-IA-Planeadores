@@ -44,29 +44,12 @@ class PolarPlaneador:
         return a * v_kmh**2 + b * v_kmh + c
 
 
-# LET L-13 Blanik: planeador de entrenamiento biplaza, comun en escuelas
-# (club de Zarate incluido). Datos reales verificados:
-#   - Mejor planeo: 28:1 a 93 km/h
-#   - Minimo hundimiento: 0.84 m/s a 83 km/h
-#   (fuente: https://en.wikipedia.org/wiki/LET_L-13_Blan%C3%ADk)
-# No hay un tercer punto verificado a alta velocidad publicado, por eso se
-# ajusta con el metodo de 2 puntos criticos (vertice + mejor planeo) en vez
-# de inventar un tercer dato. Si en algun momento aparece la polar oficial
-# del manual de vuelo con mas puntos, conviene reemplazar esto por
-# desde_tres_puntos() con esos valores.
-POLAR_BLANIK_L13 = PolarPlaneador.desde_puntos_criticos(
-    v_min_hundimiento_kmh=83,
-    min_hundimiento_ms=0.84,
-    v_mejor_planeo_kmh=93,
-    ld_max=28,
-    nombre="LET L-13 Blanik (2 puntos reales verificados, sin tercer punto de alta velocidad)",
-)
-
-# Schleicher ASK-13: planeador de entrenamiento biplaza que se va a usar
-# para el curso (confirmado por Franco el 26/09). Datos encontrados por
-# busqueda web, SIN verificar contra el manual de vuelo oficial ni contra
-# la fuente primaria (Wikipedia esta bloqueada por politica de red del
-# sandbox, no se pudo leer el infobox directamente):
+# Schleicher ASK-13: planeador de entrenamiento biplaza del club,
+# usado para el curso (confirmado por Franco el 26/09; el club no tiene
+# Blanik y no lo va a usar). Datos encontrados por busqueda web, SIN
+# verificar contra el manual de vuelo oficial ni contra la fuente
+# primaria (Wikipedia esta bloqueada por politica de red del sandbox,
+# no se pudo leer el infobox directamente):
 #   - Mejor planeo: 27:1 a 85 km/h
 #   - Minimo hundimiento: 0.80 m/s a 68 km/h
 # Reemplazar por los valores del manual de vuelo del club en cuanto esten

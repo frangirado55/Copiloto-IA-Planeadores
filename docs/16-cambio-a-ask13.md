@@ -1,35 +1,33 @@
-# Cambio de planeador: ASK-13 en vez de Blanik L-13 (26/09)
+# Cambio de planeador: ASK-13 reemplaza al Blanik L-13 (26/09)
 
-Franco confirmó que van a usar el **Schleicher ASK-13** para el curso.
-Se cambió la polar por defecto del modelo, que hasta ahora usaba el
-LET L-13 Blanik.
+Franco confirmó que el club **no tiene Blanik y no lo va a usar** — el
+planeador real del curso es el **Schleicher ASK-13**. Se reemplazó la
+polar del modelo, que hasta ahora usaba el LET L-13 Blanik (dato que
+nunca se pudo verificar contra un planeador real del club, solo contra
+Wikipedia).
 
 ## Qué se cambió
 
-- `scripts/decision_maccready.py`: se agregó `POLAR_ASK13` (mismo método
-  de 2 puntos críticos que ya se usaba para el Blanik, para no inventar
-  un tercer punto). `POLAR_BLANIK_L13` se deja definida, no se borró —
-  por si en algún momento se necesita comparar o se sigue volando ese
-  planeador también.
+- `scripts/decision_maccready.py`: `POLAR_BLANIK_L13` se borró (no se
+  va a usar nunca, no tiene sentido mantenerla). Se agregó `POLAR_ASK13`
+  con el mismo método de 2 puntos críticos (vértice + mejor planeo, sin
+  inventar un tercer dato).
 - `decidir()` (en `decision_maccready.py`), `recomendar()` (en
   `copiloto.py`) y `buscar_zona_aterrizaje()` (en `zona_aterrizaje.py`):
-  el parámetro `polar` por defecto pasó de `POLAR_BLANIK_L13` a
-  `POLAR_ASK13`.
+  el parámetro `polar` por defecto ahora es `POLAR_ASK13`.
 
 ## Origen del dato — sin verificar todavía
 
-A diferencia del Blanik (cuyos 2 puntos vienen de Wikipedia, confirmados
-en su momento), los datos del ASK-13 salieron de una búsqueda web —
-**no se pudo leer la fuente original directamente** porque el sandbox
-bloquea el acceso a Wikipedia (misma política que ya afectó la consulta
-de SkySight). Los valores usados:
+A diferencia del Blanik (cuyos 2 puntos venían de Wikipedia, al menos
+confirmados en su momento), los datos del ASK-13 salieron de una
+búsqueda web — **no se pudo leer la fuente original directamente**
+porque el sandbox bloquea el acceso a Wikipedia (misma política que ya
+afectó la consulta de SkySight). Los valores usados:
 
 - Mejor planeo: 27:1 a 85 km/h
 - Mínimo hundimiento: 0.80 m/s a 68 km/h
 
-Son razonables (el ASK-13 es un poco menos eficiente que el Blanik, lo
-cual tiene sentido: es un diseño más viejo y más pesado en relación),
-pero quedan marcados como **pendientes de confirmar contra el manual de
+Quedan marcados como **pendientes de confirmar contra el manual de
 vuelo oficial** — está en la lista de cosas para preguntar/buscar en el
 club.
 
