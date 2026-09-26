@@ -23,7 +23,7 @@ import rasterio
 
 from config import init_earth_engine, get_aoi, CLUB_ZARATE
 from analizar_terreno import get_worldcover
-from decision_maccready import POLAR_BLANIK_L13, alcance_maximo_km, mejor_planeo
+from decision_maccready import POLAR_ASK13, alcance_maximo_km, mejor_planeo
 from copiloto import distancia_km
 
 OUTPUT_DIR = "data/salida_terreno"
@@ -74,7 +74,7 @@ def generar_mapa_aptitud():
     print(f"Guardado: {APTITUD_TIF}")
 
 
-def buscar_zona_aterrizaje(lat, lon, altura_actual_m, polar=POLAR_BLANIK_L13, factor_seguridad=0.8, top_n=3):
+def buscar_zona_aterrizaje(lat, lon, altura_actual_m, polar=POLAR_ASK13, factor_seguridad=0.8, top_n=3):
     """Dentro del alcance maximo de planeo, busca las mejores zonas para
     un aterrizaje de emergencia, y si el club queda al alcance."""
     alcance_km = alcance_maximo_km(altura_actual_m, polar, factor_seguridad)

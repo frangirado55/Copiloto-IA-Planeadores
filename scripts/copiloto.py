@@ -14,7 +14,7 @@ import datetime
 import numpy as np
 import rasterio
 
-from decision_maccready import POLAR_BLANIK_L13, decidir
+from decision_maccready import POLAR_ASK13, decidir
 from config import HOTSPOTS_CONOCIDOS, init_earth_engine
 from patron_horario import multiplicador_en_vivo
 
@@ -91,7 +91,7 @@ def mejores_candidatas(lat, lon, radio_km=10, excluir_radio_km=0.5, top_n=3, arc
     return candidatos[:top_n]
 
 
-def recomendar(lat, lon, altura_actual_m, fuerza_actual_ms, radio_busqueda_km=10, polar=POLAR_BLANIK_L13, hora_local=None):
+def recomendar(lat, lon, altura_actual_m, fuerza_actual_ms, radio_busqueda_km=10, polar=POLAR_ASK13, hora_local=None):
     """Pipeline completo: busca candidatas en el mapa de terreno y le pide
     al Modulo 3 que decida sobre la mejor.
 

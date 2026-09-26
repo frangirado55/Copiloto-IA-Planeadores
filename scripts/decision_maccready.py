@@ -62,6 +62,23 @@ POLAR_BLANIK_L13 = PolarPlaneador.desde_puntos_criticos(
     nombre="LET L-13 Blanik (2 puntos reales verificados, sin tercer punto de alta velocidad)",
 )
 
+# Schleicher ASK-13: planeador de entrenamiento biplaza que se va a usar
+# para el curso (confirmado por Franco el 26/09). Datos encontrados por
+# busqueda web, SIN verificar contra el manual de vuelo oficial ni contra
+# la fuente primaria (Wikipedia esta bloqueada por politica de red del
+# sandbox, no se pudo leer el infobox directamente):
+#   - Mejor planeo: 27:1 a 85 km/h
+#   - Minimo hundimiento: 0.80 m/s a 68 km/h
+# Reemplazar por los valores del manual de vuelo del club en cuanto esten
+# disponibles.
+POLAR_ASK13 = PolarPlaneador.desde_puntos_criticos(
+    v_min_hundimiento_kmh=68,
+    min_hundimiento_ms=0.80,
+    v_mejor_planeo_kmh=85,
+    ld_max=27,
+    nombre="Schleicher ASK-13 (datos sin verificar contra manual de vuelo, pendiente de confirmar)",
+)
+
 
 def velocidad_optima_crucero(mc_setting_ms, polar, v_min_kmh=60, v_max_kmh=200, paso_kmh=1):
     """Velocidad de crucero (km/h) que maximiza la velocidad media de
@@ -118,7 +135,7 @@ def decidir(
     fuerza_candidata_ms,
     distancia_candidata_km,
     altura_actual_m,
-    polar=POLAR_BLANIK_L13,
+    polar=POLAR_ASK13,
     margen_seguridad_m=150,
     margen_comodo_m=None,
     umbral_mejora=1.15,
@@ -205,7 +222,7 @@ def imprimir_decision(titulo, resultado):
 
 
 def main():
-    print("Polar en uso:", POLAR_BLANIK_L13.nombre)
+    print("Polar en uso:", POLAR_ASK13.nombre)
 
     # Escenario 1: candidata mucho mejor, buena altura -> deberia virar
     r1 = decidir(
